@@ -369,6 +369,13 @@
   .gallery-item:nth-child(4n+3) img { border: 8px solid var(--sage); }
   .gallery-item:nth-child(4n+4) img { border: 8px solid var(--charcoal); }
   #page-contact h2 { font-weight: 750 !important; letter-spacing: -0.01em; }
+  /* hover: grow the whole framed photo (frame + picture together) instead of zooming the picture inside a clipped box */
+  .gallery-item { overflow: visible; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); position: relative; }
+  .gallery-item:hover { transform: scale(1.04); z-index: 2; }
+  .gallery-item img:hover { transform: none; }
+  .category-card-image { transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+  .category-card:hover .category-card-image { transform: scale(1.03); }
+  .category-card:hover .category-card-image img { transform: none; }
   @media (max-width: 768px) { .about-portrait img { border-width: 9px; transform: rotate(-2deg); } .gallery-item img { border-width: 6px !important; } }
 </style>
 </head>
