@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<!--
+  VERSION: v25-upcoming-fill-placeholders
+  HISTORY:
+  v25-upcoming-fill-placeholders — Upcoming: School of Rock (Hillbarn) and
+                        Cabaret (Throckmorton). About heading now says San
+                        Francisco; phone number removed. Filled empty slots
+                        with unused photos already in images/: About portrait
+                        (hero-shot-2), About gallery (MIDS-143, hero-shot-3,
+                        CHAR10, OZ-crafts, CW7, all open in lightbox), Wizard
+                        of Oz cover now OZ.jpg (+OZ1, playbill inside), Marin
+                        Shakespeare camp (MSC-camp-set), Residencies (TELK1/2).
+                        Projects with no photos show a title card / no empty
+                        boxes. Fixed .container padding shorthands that wiped
+                        side gutters on desktop (Category title misaligned)
+                        and vertical spacing on mobile (Acting title hidden
+                        under nav, About lead touching prose). Upcoming grid
+                        auto-fits item count. Roe paths use .JPG to match
+                        the files (case matters on Vercel).
+  v24-old-site-copy — Replaced all About-page lorem ipsum with Nico's bio
+                        from the old Wix site (nicolaspoler.com), lightly
+                        rearranged into heading / lead / paragraphs, plus a
+                        short facts list and sign-off from the old home page.
+                        Removed the "Photo credit here" placeholder caption.
+                        Contact page now uses the old site's "Contact Me!"
+                        heading with Email. Added director credits
+                        from the old portfolio page: Cakewalk (dir. Kobe
+                        McKelvey) and Bare (dir. Nicolas Poler & Andie Chan).
+  v23-wizard-oz-simplify — Reverted the Wizard of Oz/Aristocats entry back
+                        to the simple single-photo format (cover + one
+                        photos array), keeping the combined title "The
+                        Wizard of Oz · The Aristocats Jr." Dropped the
+                        babsShows multi-section structure from v21 for now —
+                        can revisit if/when there's more content (photos,
+                        explanatory text) to split the two shows apart.
+  v22-char-swap — Swapped CHAR1 and CHAR4 in the Charlie and the Chocolate
+                        Factory project (Directing category): CHAR4 is now
+                        the cover photo, CHAR1 moved into the photos array
+                        (which becomes the project page's hero photo).
+  v21-aristocats-merge — Removed "The Aristocats Jr." from the Upcoming
+                        strip on the home page. Merged it instead into the
+                        Directing category's Wizard of Oz project, which is
+                        now a combined multi-show card ("The Wizard of Oz ·
+                        The Aristocats Jr.") using the same babsShows
+                        pattern as the Throckmorton stage-manager entry.
+                        Aristocats photo filenames are still a placeholder —
+                        add them once those images are in
+                        images/directing/.
+  v20-resume-smaller — Shrunk .resume-embed max-width from 640px to 480px
+                        so the full resume page fits within the viewport at
+                        default browser zoom without needing to scroll.
+  v19-resume-embed-cleanup — Hid the browser's native PDF viewer chrome
+                        (dark toolbar, thumbnail sidebar, zoom controls) by
+                        appending #toolbar=0&navpanes=0&scrollbar=0&view=Fit
+                        to both resume PDF URLs, so just the page itself
+                        shows. Switched .resume-frame from a fixed height to
+                        aspect-ratio: 8.5/11 (true US letter proportions) so
+                        the page fills the frame exactly with no dead space,
+                        and narrowed .resume-embed from 760px to 640px so it
+                        reads a bit smaller/more contained. Removed the now-
+                        redundant mobile height override.
+  v18-creamier-palette — Warmed up the color palette for more "flavour":
+                        --cream shifted from #F7F3EE to a pinker #F5E8DE,
+                        --warm-white warmed slightly to #FBF3EC, --border
+                        warmed to #EAD9CE. Body background now uses --cream
+                        instead of --warm-white so the whole site reads
+                        creamier. Nav's translucent background updated to
+                        match. Flipped resume-section to --warm-white and
+                        resume-frame to --cream so that area still has
+                        layered contrast instead of going flat.
+  v17-doomers-photo — Added images/acting/DOOM.jpg as the cover card image
+                        and single project photo for the "Doomers" entry
+                        (previously had no cover/photos set).
+  v16-mac-rotation-fix — Removed leftover CSS `transform: rotate(90deg)` rule
+                        targeting MAC1/MAC3/MAC4/MAC6.jpg in the babs-grid.
+                        That rule was a code-side workaround from before the
+                        actual image files were rotated. Since the files
+                        themselves have now been physically rotated, the CSS
+                        was double-rotating them. Left the object-position
+                        crop rules (MAC1/MAC4/MAC6, HAM4, RJ2) untouched.
+  v15-babs-hoist-fix — Fixed "Bay Area Bar Shakes" button in Acting/Work page:
+                        `allBabsSrcs` was referenced before it was declared
+                        (temporal dead zone ReferenceError), which silently
+                        broke openProject() before it could navigate. Moved
+                        the declaration above its first use and removed dead
+                        duplicate photosHtml code in the babs branch.
+  v14-babs-fix        — (prior chat) initial attempt at babs section fix
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicolas Poler</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #F5E8DE; --warm-white: #FBF3EC; --rose: #C4897A;
+    --rose-light: #E8CFC9; --rose-dark: #8B5E53;
+    --charcoal: #2C2826; --muted: #6B6460; --border: #EAD9CE;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--charcoal); line-height: 1.7; font-size: 16px; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.4rem 3rem; background: rgba(245,232,222,0.9); backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+  nav.scrolled { border-bottom-color: var(--border); }
+  .nav-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; letter-spacing: 0.04em; color: var(--charcoal); text-decoration: none; cursor: pointer; }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: color 0.2s; position: relative; }
+  .nav-links a:hover, .nav-links a.active { color: var(--charcoal); }
+  .nav-links a.active::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px; background: var(--rose); }
+
+  /* PAGE SYSTEM */
+  .page { display: none; }
+  .page.active { display: block; animation: fade 0.5s ease; }
+  #page-home.active { display: flex; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* HOME */
+  #page-home { flex-direction: column; }
+  .home-hero { height: 100vh; position: relative; overflow: hidden; flex-shrink: 0; }
+  .home-image { position: absolute; inset: 0; }
+  .home-image img { width: 100%; height: 100%; object-fit: cover; object-position: center 0%; }
+  .home-image-placeholder { width: 100%; height: 100%; background: linear-gradient(150deg, var(--rose-light), var(--cream)); display: flex; align-items: center; justify-content: center; }
+  .home-image-placeholder span { color: var(--rose-dark); font-size: 0.9rem; }
+  .home-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(20,18,16,0.0) 30%, rgba(20,18,16,0.75) 100%); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center; padding: 0 2rem 4rem; }
+  .home-name { font-family: 'Playfair Display', serif; font-size: clamp(3rem,9vw,7rem); font-weight: 400; color: var(--warm-white); line-height: 1.05; }
+  .home-roles { margin-top: 1.5rem; color: rgba(255,255,255,0.85); font-size: clamp(0.8rem,1.6vw,1rem); letter-spacing: 0.32em; text-transform: uppercase; font-weight: 300; }
+  .home-enter { margin-top: 3rem; display: flex; gap: 2rem; }
+  .home-enter a { color: var(--warm-white); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.4); cursor: pointer; transition: border-color 0.2s; }
+  .home-enter a:hover { border-bottom-color: var(--warm-white); }
+
+  /* UPCOMING */
+  .upcoming-strip { background: var(--charcoal); padding: 4rem 3rem; }
+  .upcoming-inner { max-width: 1000px; margin: 0 auto; }
+  .upcoming-label { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); margin-bottom: 2rem; }
+  .upcoming-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+  .upcoming-item { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1.4rem; }
+  .upcoming-item-type { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; }
+  .upcoming-item-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; font-weight: 400; color: var(--warm-white); line-height: 1.3; margin-bottom: 0.4rem; }
+  .upcoming-item-detail { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+  .upcoming-item-when { font-size: 0.78rem; color: var(--rose); margin-top: 0.6rem; }
+
+  /* SHARED */
+  .page-body { padding-top: 80px; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 3rem; }
+  .section-label { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.8rem; }
+  .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem,4vw,3.2rem); font-weight: 400; line-height: 1.15; }
+
+  /* ABOUT */
+  .about-hero { padding-top: 5rem; padding-bottom: 3rem; }
+  .about-hero .page-title { max-width: 700px; }
+  .about-lead { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem,2vw,1.4rem); font-style: italic; color: var(--muted); line-height: 1.8; max-width: 720px; margin-top: 1.8rem; }
+  .about-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 4rem; align-items: start; padding-top: 3rem; padding-bottom: 5rem; }
+  .about-prose p { color: var(--muted); margin-bottom: 1.4rem; line-height: 1.9; }
+  .about-facts { list-style: none; margin: 2.2rem 0 2rem; border-top: 1px solid var(--border); }
+  .about-facts li { color: var(--charcoal); font-size: 0.92rem; padding: 0.75rem 0 0.75rem 1.4rem; border-bottom: 1px solid var(--border); position: relative; }
+  .about-facts li::before { content: ''; position: absolute; left: 0.2rem; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--rose); transform: translateY(-50%); }
+  .about-prose .about-signoff { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: var(--rose-dark); margin-bottom: 0; }
+  .about-portrait img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center top; }
+  .about-portrait-ph { aspect-ratio: 3/4; background: var(--rose-light); display: flex; align-items: center; justify-content: center; }
+  .about-portrait-ph span { color: var(--rose-dark); font-size: 0.82rem; }
+  .about-portrait .caption { font-size: 0.78rem; color: var(--muted); margin-top: 0.6rem; font-style: italic; }
+  .about-gallery { padding-bottom: 5rem; }
+  .gallery-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 200px 200px; gap: 1rem; }
+  .gallery-grid > div:nth-child(1) { grid-row: span 2; }
+  .gallery-item { overflow: hidden; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; cursor: pointer; }
+  .gallery-item img:hover { transform: scale(1.04); }
+  .gallery-item-ph { width: 100%; height: 100%; background: var(--cream); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .gallery-item-ph span { color: var(--muted); font-size: 0.78rem; }
+
+  /* RESUME */
+  .resume-section { background: var(--warm-white); padding: 5rem 0; }
+  .resume-toggle { display: flex; border: 1px solid var(--border); border-radius: 2px; width: fit-content; margin: 1.5rem auto 2.5rem; overflow: hidden; }
+  .resume-toggle button { font-family: 'Inter', sans-serif; background: transparent; border: none; cursor: pointer; padding: 0.7rem 1.4rem; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); transition: background 0.2s, color 0.2s; }
+  .resume-toggle button.active { background: var(--charcoal); color: var(--warm-white); }
+  .resume-embed { max-width: 480px; margin: 0 auto; }
+  .resume-frame { width: 100%; aspect-ratio: 8.5/11; border: 1px solid var(--border); background: var(--cream); }
+  .resume-frame object { width: 100%; height: 100%; }
+  .resume-fallback { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 2rem; text-align: center; }
+  .resume-fallback span { color: var(--muted); font-size: 0.85rem; }
+  .resume-fallback a { color: var(--rose-dark); font-size: 0.85rem; }
+  .resume-center { text-align: center; }
+
+  /* WORK HUB */
+  .work-intro { padding-top: 4rem; padding-bottom: 1rem; text-align: center; }
+  .container.work-page-wide { max-width: 1280px; margin: 0 auto; padding: 0 3rem; }
+  .category-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 4rem; padding-bottom: 5rem; align-items: start; }
+  .category-card { cursor: pointer; position: relative; text-align: center; }
+  .category-card-name { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 400; text-align: center; color: var(--charcoal); position: absolute; left: 0; right: 0; top: -3.2rem; z-index: 3; transition: top 0.5s cubic-bezier(0.16,1,0.3,1), color 0.5s; white-space: nowrap; pointer-events: none; }
+  .category-card:hover .category-card-name { top: 45%; color: var(--warm-white); transform: translateY(-50%); }
+  .category-card-image { aspect-ratio: 3/4.4; overflow: hidden; position: relative; border-radius: 2px; background: var(--cream); width: 100%; min-height: 480px; margin-top: 3.2rem; }
+  .category-card-image img { width: 100%; height: 100%; object-fit: cover; object-position: center center; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .category-card:hover .category-card-image img { transform: scale(1.08); }
+  .category-card-image::after { content: ''; position: absolute; inset: 0; background: rgba(20,18,16,0); transition: background 0.5s; }
+  .category-card:hover .category-card-image::after { background: rgba(20,18,16,0.5); }
+  .category-card-ph { width: 100%; height: 100%; background: var(--rose-light); display: flex; align-items: center; justify-content: center; }
+  .category-card-ph span { color: var(--rose-dark); font-size: 0.8rem; }
+  .category-card-arrow { position: absolute; left: 0; right: 0; bottom: -3rem; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: var(--warm-white); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0; transition: bottom 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s; pointer-events: none; }
+  .category-card:hover .category-card-arrow { bottom: 1.4rem; opacity: 1; }
+
+  /* CATEGORY PAGE */
+  .cat-header { padding-top: 4rem; padding-bottom: 2.5rem; }
+  .work-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; padding-bottom: 5rem; }
+  .work-card { cursor: pointer; }
+  .work-card-image { overflow: hidden; aspect-ratio: 4/3; }
+  .work-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+  .work-card:hover .work-card-image img { transform: scale(1.05); }
+  .work-card-ph { width: 100%; height: 100%; background: var(--cream); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .work-card-ph span { color: var(--muted); font-size: 0.82rem; }
+  .work-card-type { width: 100%; height: 100%; background: var(--rose-light); display: flex; align-items: center; justify-content: center; padding: 2rem; text-align: center; transition: background 0.4s; }
+  .work-card-type span { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.8rem; color: var(--rose-dark); line-height: 1.25; }
+  .work-card:hover .work-card-type { background: #E2C3BB; }
+  .work-card-meta { padding: 1rem 0.2rem; }
+  .work-card-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.3rem; }
+  .work-card-sub { font-size: 0.85rem; color: var(--muted); }
+
+  .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); cursor: pointer; margin: 3rem 0 0; transition: color 0.2s; }
+  .back-link:hover { color: var(--charcoal); }
+
+  /* PROJECT DETAIL */
+  .project-header { padding: 2rem 0 2.5rem; border-bottom: 1px solid var(--border); margin-bottom: 3rem; }
+  .project-cat { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.8rem; }
+  .project-title { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem,5vw,3.6rem); font-weight: 400; line-height: 1.1; }
+  .project-meta { display: flex; flex-wrap: wrap; gap: 2.5rem; margin-top: 1.5rem; }
+  .project-meta-item .k { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.2rem; }
+  .project-meta-item .v { font-size: 0.95rem; }
+  .project-note { max-width: 680px; color: var(--muted); font-size: 1.05rem; line-height: 1.9; margin-bottom: 3.5rem; }
+  .collaborators { margin-bottom: 3.5rem; display: flex; flex-wrap: wrap; gap: 3rem; }
+  .collab-group h4 { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.6rem; }
+  .collab-group ul { list-style: none; }
+  .collab-group li { font-size: 0.9rem; color: var(--muted); padding: 0.15rem 0; }
+
+  /* PHOTO LAYOUT — standard projects */
+  .project-photos { display: block; padding-bottom: 5rem; }
+  .pp-full { margin-bottom: 1.2rem; overflow: hidden; }
+  .pp-full img { width: 100%; display: block; cursor: zoom-in; }
+  .pp-mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .pp-mosaic .pp-item { overflow: hidden; min-height: 280px; }
+  .pp-mosaic .pp-item img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; cursor: zoom-in; }
+  .pp-ph { width: 100%; aspect-ratio: 3/2; background: var(--cream); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .photo-credit { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-bottom: 3rem; }
+  .pp-ph span { color: var(--muted); font-size: 0.8rem; }
+
+  /* BABS SHOW SECTIONS */
+  .babs-show { margin-bottom: 4rem; }
+  .babs-show:not(:has(.babs-grid)) { margin-bottom: 1.5rem; }
+  .babs-show-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: var(--muted); letter-spacing: 0.04em; margin-bottom: 1.2rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); }
+  .babs-show-title span { font-style: normal; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rose); margin-left: 0.8rem; font-family: 'Inter', sans-serif; }
+  .babs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+  .babs-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center top; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+  .babs-grid img[src*="HAM4"] { object-position: center 70%; }
+  .babs-grid img[src*="RJ2"] { object-position: center center; }
+  .babs-grid img[src*="MAC1"] { object-position: center center; }
+  .babs-grid img[src*="MAC4"] { object-position: center top; }
+  .babs-grid img[src*="MAC6"] { object-position: center center; }
+  .babs-grid img:hover { opacity: 0.88; }
+
+  /* LIGHTBOX */
+  .lightbox { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.93); align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lightbox-img { max-width: 90vw; max-height: 90vh; object-fit: contain; display: block; }
+  .lightbox-close { position: absolute; top: 1.5rem; right: 2rem; color: white; font-size: 2rem; cursor: pointer; background: none; border: none; line-height: 1; opacity: 0.7; transition: opacity 0.2s; z-index: 1000; }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; cursor: pointer; background: none; border: none; opacity: 0.6; transition: opacity 0.2s; padding: 1rem; z-index: 1000; }
+  .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
+  .lightbox-prev { left: 1rem; }
+  .lightbox-next { right: 1rem; }
+
+  /* CONTACT */
+  #page-contact .contact-splash { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem; }
+  .contact-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem 4rem; }
+  .contact-label { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.6rem; }
+  .contact-item a { font-size: clamp(1rem,2.5vw,1.4rem); color: var(--rose-dark); text-decoration: none; border-bottom: 1px solid var(--rose-light); padding-bottom: 4px; transition: border-color 0.2s; }
+  .contact-item a:hover { border-bottom-color: var(--rose-dark); }
+
+  /* FOOTER */
+  footer { background: var(--charcoal); padding: 2.5rem 3rem; display: flex; justify-content: center; }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.04em; transition: color 0.2s; }
+  footer a:hover { color: var(--warm-white); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.4rem; }
+    .nav-links { gap: 1.1rem; }
+    .nav-links a { font-size: 0.7rem; }
+    .container, .container.work-page-wide { padding-left: 1.4rem; padding-right: 1.4rem; }
+    .upcoming-strip { padding: 3rem 1.4rem; }
+    .upcoming-items { grid-template-columns: 1fr; gap: 1.5rem; }
+    .about-split { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-hero .page-title br { display: none; }
+    .category-grid, .work-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-grid > div:nth-child(1) { grid-row: auto; grid-column: span 2; }
+    .gallery-item { aspect-ratio: 4/3; }
+    .pp-mosaic { grid-template-columns: 1fr; }
+    .babs-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lb-close">✕</button>
+  <button class="lightbox-prev" id="lb-prev">&#8592;</button>
+  <img class="lightbox-img" id="lb-img" src="" alt="">
+  <button class="lightbox-next" id="lb-next">&#8594;</button>
+</div>
+
+<nav id="nav">
+  <a class="nav-name" onclick="go('home')">Nicolas Poler</a>
+  <ul class="nav-links">
+    <li><a id="nl-work" onclick="go('work')">Work</a></li>
+    <li><a id="nl-about" onclick="go('about')">About</a></li>
+    <li><a id="nl-contact" onclick="go('contact')">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="home-hero">
+    <div class="home-image">
+      <img src="images/home/hero-shot-1-cropped.jpg" alt="Nicolas Poler">
+    </div>
+    <div class="home-overlay">
+      <h1 class="home-name">Nicolas Poler</h1>
+      <p class="home-roles">Actor &nbsp;·&nbsp; Director &nbsp;·&nbsp; Educator</p>
+      <div class="home-enter">
+        <a onclick="go('work')">Work</a>
+        <a onclick="go('about')">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="upcoming-strip">
+    <div class="upcoming-inner">
+      <p class="upcoming-label">Upcoming</p>
+      <div class="upcoming-items">
+        <div class="upcoming-item">
+          <div class="upcoming-item-type">Acting</div>
+          <div class="upcoming-item-title">School of Rock</div>
+          <div class="upcoming-item-detail">Hillbarn Theatre<br>dir. Stephen Muterspaugh</div>
+          <div class="upcoming-item-when">November – December 2026</div>
+        </div>
+        <div class="upcoming-item">
+          <div class="upcoming-item-type">Stage Management</div>
+          <div class="upcoming-item-title">Cabaret</div>
+          <div class="upcoming-item-detail">Throckmorton Theatre<br>dir. Erin Gentry</div>
+          <div class="upcoming-item-when">March 2027</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <div class="page-body">
+    <div class="about-hero container">
+      <p class="section-label">About</p>
+      <h2 class="page-title">I am an artist and educator <br>based in San Francisco, California.</h2>
+      <p class="about-lead">I have art, science, and endless passion for learning and teaching in my heart.</p>
+    </div>
+    <div class="container about-split">
+      <div class="about-prose">
+        <p>I was raised in San Francisco steeped in Venezuelan culture and an international community. I have worked with kids and teens in theater education for almost a decade.</p>
+        <p>Having graduated from UNCSA with a BFA in Acting, I am ecstatic to bring the artistry and culture I have absorbed back to my community in the Bay Area.</p>
+        <p>I am especially interested in stories dealing with Latinness, Queerness, Religion, and the absurdity of reality.</p>
+        <ul class="about-facts">
+          <li>Ran a theater company as Artistic Director</li>
+          <li>Fluent in Spanish and French</li>
+          <li>Classically trained pianist</li>
+        </ul>
+        <p class="about-signoff">I look forward to meeting you!</p>
+      </div>
+      <div class="about-portrait">
+        <img src="images/home/hero-shot-2.jpg" alt="Nicolas Poler">
+      </div>
+    </div>
+    <div class="container about-gallery">
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="images/acting/MIDS-143.jpg" alt=""></div>
+        <div class="gallery-item"><img src="images/home/hero-shot-3.jpg" alt=""></div>
+        <div class="gallery-item"><img src="images/directing/CHAR10.jpg" alt=""></div>
+        <div class="gallery-item"><img src="images/other/OZ-crafts.JPG" alt=""></div>
+        <div class="gallery-item"><img src="images/acting/CW7.jpg" alt=""></div>
+      </div>
+    </div>
+    <div class="resume-section" id="resume-section">
+      <div class="container resume-center">
+        <p class="section-label">Resume</p>
+        <h2 class="page-title">Resumes</h2>
+        <div class="resume-toggle">
+          <button id="rt-acting" class="active" onclick="showResume('acting')">Acting</button>
+          <button id="rt-production" onclick="showResume('production')">Production</button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="resume-embed">
+          <div class="resume-frame" id="resume-frame-acting">
+            <object data="resume-acting.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit" type="application/pdf">
+              <div class="resume-fallback">
+                <span>Acting resume embeds here once <code>resume-acting.pdf</code> is in your project folder.</span>
+                <a href="resume-acting.pdf" target="_blank">Open PDF →</a>
+              </div>
+            </object>
+          </div>
+          <div class="resume-frame" id="resume-frame-production" style="display:none;">
+            <object data="resume-production.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit" type="application/pdf">
+              <div class="resume-fallback">
+                <span>Production resume embeds here once <code>resume-production.pdf</code> is in your project folder.</span>
+                <a href="resume-production.pdf" target="_blank">Open PDF →</a>
+              </div>
+            </object>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK HUB -->
+<div id="page-work" class="page">
+  <div class="page-body">
+    <div class="container work-intro">
+    </div>
+    <div class="container" style="max-width:1400px; display:flex; justify-content:center;">
+      <div class="category-grid">
+        <div class="category-card" onclick="openCategory('acting')">
+          <div class="category-card-name">Acting</div>
+          <div class="category-card-image">
+            <img src="images/acting/CMT5.jpg" alt="Acting">
+          </div>
+        </div>
+        <div class="category-card" onclick="openCategory('directing')">
+          <div class="category-card-name">Directing</div>
+          <div class="category-card-image">
+            <img src="images/directing/CHAR14.jpg" alt="Directing">
+          </div>
+        </div>
+        <div class="category-card" onclick="openCategory('other')">
+          <div class="category-card-name" style="white-space:normal;">Stage Management /<br>Education</div>
+          <div class="category-card-image">
+            <img src="images/other/Little-Mermaid-Set.jpg" alt="Education / Stage Management">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY PAGE -->
+<div id="page-category" class="page">
+  <div class="page-body">
+    <div class="container">
+      <a class="back-link" onclick="go('work')">← Work</a>
+    </div>
+    <div class="container cat-header">
+      <h2 class="page-title" id="cat-title"></h2>
+    </div>
+    <div class="container">
+      <div class="work-grid" id="cat-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT DETAIL -->
+<div id="page-project" class="page">
+  <div class="page-body">
+    <div class="container">
+      <a class="back-link" onclick="backToCategory()">← Back</a>
+    </div>
+    <div class="container" id="project-content"></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="page-contact" class="page">
+  <div class="contact-splash">
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2.5rem,7vw,5rem);font-weight:400;color:var(--charcoal);margin-bottom:2.5rem;">Contact Me!</h2>
+    <div class="contact-items">
+      <div class="contact-item">
+        <p class="contact-label">Email</p>
+        <a href="mailto:polernicolas@gmail.com">polernicolas@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="mailto:polernicolas@gmail.com">polernicolas@gmail.com</a>
+</footer>
+
+<script>
+  const CATEGORIES = {
+    acting:    { title: 'Acting' },
+    directing: { title: 'Directing' },
+    other:     { title: 'Stage Management / Education' }
+  };
+
+  const PROJECTS = [
+    /* ── ACTING ──────────────────────────────────────────────────── */
+    {
+      id: 'midsummer-inverness', category: 'acting',
+      title: 'A Midsummer Night\'s Dream', role: 'Francis Flute',
+      company: 'dir. Sharron Drake, Inverness', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/IMSND5.jpg',
+      photos: [
+        'images/acting/IMSND3.jpg',
+        'images/acting/IMSND2.jpg|portrait',
+        'images/acting/IMSND4.jpg',
+        'images/acting/IMSND1.jpg',
+        'images/acting/IMSND6.jpg',
+        'images/acting/IMSND7.jpg'
+      ]
+    },
+    {
+      id: 'mysterious-stranger', category: 'acting',
+      title: 'The Mysterious Stranger', role: 'Gustave Engle',
+      company: 'SF Youth Theatre · dir. Cliff Mayotte', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/MS2.jpg',
+      credit: 'Photos: Robbie Sweeney',
+      photos: [
+        'images/acting/MS3.jpg',
+        'images/acting/MS1.jpg',
+        'images/acting/MS4.jpg',
+        'images/acting/MS5.jpg',
+        'images/acting/MS6.jpg'
+      ]
+    },
+    {
+      id: 'cakewalk', category: 'acting',
+      title: 'Cakewalk / When You See Yourself in Such a Way I Smile',
+      role: 'Leon', company: 'dir. Kobe McKelvey', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/CW4.jpg',
+      photos: [
+        'images/acting/CW1.jpg',
+        'images/acting/CW3.jpg',
+        'images/acting/CW5.jpg',
+        'images/acting/CW9.jpg',
+        'images/acting/CW13.jpg'
+      ]
+    },
+    {
+      id: 'ba-bar-shakes', category: 'acting',
+      title: 'Bay Area Bar Shakes',
+      role: 'Hamlet · Macbeth · Dogberry · Lysander · Paris',
+      company: '', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/MAC5.jpg',
+      babs: true,
+      babsShows: [
+        {
+          title: 'A Midsummer Night\'s Dream',
+          role: 'Lysander',
+          credit: 'Photos: brown guy design',
+          photos: [
+            'images/acting/MIDS-197.jpg',
+            'images/acting/MIDS-119.jpg',
+            'images/acting/MIDS-97.jpg',
+            'images/acting/MIDS-66.jpg',
+            'images/acting/MIDS-65.jpg',
+            'images/acting/MIDS-21.jpg',
+            'images/acting/MIDS-19.jpg'
+          ]
+        },
+        {
+          title: 'Macbeth',
+          role: 'Macbeth',
+          credit: 'Photos: Natasha Casino',
+          photos: [
+            'images/acting/MAC6.jpg',
+            'images/acting/MAC5.jpg',
+            'images/acting/MAC4.jpg',
+            'images/acting/MAC3.jpg',
+            'images/acting/MAC2.jpg',
+            'images/acting/MAC1.jpg'
+          ]
+        },
+        {
+          title: 'Much Ado About Nothing',
+          role: 'Dogberry',
+          credit: 'Photos: Ash Baker Studio',
+          photos: [
+            'images/acting/MUCH5.jpg',
+            'images/acting/MUCH4.jpg',
+            'images/acting/MUCH3.jpg',
+            'images/acting/MUCH2.jpg',
+            'images/acting/MUCH1.jpg'
+          ]
+        },
+        {
+          title: 'Romeo & Juliet',
+          role: 'Paris',
+          credit: 'Photos: Ash Baker Studio',
+          photos: [
+            'images/acting/RJ3.jpg',
+            'images/acting/RJ2.jpg',
+            'images/acting/RJ1.jpg'
+          ]
+        },
+        {
+          title: 'Hamlet',
+          role: 'Hamlet',
+          photos: [
+            'images/acting/HAM7.jpg',
+            'images/acting/HAM6.jpg',
+            'images/acting/HAM5.jpg',
+            'images/acting/HAM4.jpg',
+            'images/acting/HAM3.jpg',
+            'images/acting/HAM2.jpg',
+            'images/acting/HAM1.jpg'
+          ]
+        }
+      ]
+    },
+    {
+      id: 'doomers', category: 'acting',
+      title: 'Doomers', role: 'Understudy',
+      company: 'BCTR · dir. Ash Baker', year: '', note: '',
+      collaborators: {}, cover: 'images/acting/DOOM.jpg', photos: ['images/acting/DOOM.jpg']
+    },
+    {
+      id: 'circle-mirror', category: 'acting',
+      title: 'Circle Mirror Transformation', role: 'Schultz',
+      company: 'UNCSA · dir. Scott Zigler', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/CMT49-cropped.jpg',
+      credit: 'Photos: UNCSA',
+      photos: [
+        'images/acting/CMT1.jpg',
+        'images/acting/CMT6.jpg',
+        'images/acting/CMT11.jpg',
+        'images/acting/CMT15.jpg',
+        'images/acting/CMT18.jpg',
+        'images/acting/CMT25.jpg',
+        'images/acting/CMT26.jpg',
+        'images/acting/CMT39.jpg',
+        'images/acting/CMT41.jpg',
+        'images/acting/CMT46.jpg',
+        'images/acting/CMT48.jpg'
+      ]
+    },
+    {
+      id: 'three-sisters', category: 'acting',
+      title: 'Three Sisters', role: 'Kulygin',
+      company: 'UNCSA · dir. Scott Zigler', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/TS2.jpg',
+      credit: 'Photos: UNCSA',
+      photos: [
+        'images/acting/TS6.jpg',
+        'images/acting/TS7.jpg',
+        'images/acting/TS13.jpg',
+        'images/acting/TS19.jpg',
+        'images/acting/TS29.jpg'
+      ]
+    },
+    {
+      id: 'roe', category: 'acting',
+      title: 'Roe', role: 'Blackmun; Doctor',
+      company: 'UNCSA · dir. Acadia Barrengos', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/R5.JPG',
+      credit: 'Photos: UNCSA',
+      photos: [
+        'images/acting/R13.JPG',
+        'images/acting/R2.JPG',
+        'images/acting/R3.JPG',
+        'images/acting/R4.JPG',
+        'images/acting/R6.JPG',
+        'images/acting/R9.JPG',
+        'images/acting/R10.JPG'
+      ]
+    },
+    {
+      id: 'long-distance-runner', category: 'acting',
+      title: 'The Loneliness of the Long Distance Runner',
+      role: 'David Cameron; Gunthorpe',
+      company: 'UNCSA · dir. Quin Gordon', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/LDR7.jpg',
+      credit: 'Photos: UNCSA',
+      photos: [
+        'images/acting/LDR13.jpg',
+        'images/acting/LDR4.jpg',
+        'images/acting/LDR5.jpg',
+        'images/acting/LDR8.jpg',
+        'images/acting/LDR11.jpg'
+      ]
+    },
+
+    /* ── DIRECTING ───────────────────────────────────────────────── */
+    {
+      id: 'charlie-chocolate', category: 'directing',
+      title: 'Charlie and the Chocolate Factory', role: 'Director',
+      company: 'Stapleton Theatre Company', year: '2025', note: '',
+      collaborators: {
+        'Choreographer / Producer': ['Isabelle Qureshi'],
+        'Musical Director': ['Robert Allen']
+      },
+      cover: 'images/directing/CHAR4.jpg',
+      photos: [
+        'images/directing/CHAR2.jpg',
+        'images/directing/CHAR3.jpg',
+        'images/directing/CHAR1.jpg',
+        'images/directing/CHAR5.jpg',
+        'images/directing/CHAR6.jpg',
+        'images/directing/CHAR7.jpg',
+        'images/directing/CHAR8.jpg',
+        'images/directing/CHAR11.jpg',
+        'images/directing/CHAR13.jpg',
+        'images/directing/CHAR14.jpg'
+      ]
+    },
+    {
+      id: 'wizard-of-oz', category: 'directing',
+      title: 'The Wizard of Oz · The Aristocats Jr.', role: 'Director',
+      company: 'Throckmorton Theatre', year: '2025', note: '',
+      collaborators: {},
+      cover: 'images/directing/OZ.jpg',
+      photos: [
+        'images/directing/OZ.jpg',
+        'images/other/OZ1.jpg',
+        'images/directing/OZ2.jpg'
+      ]
+    },
+    {
+      id: 'providence', category: 'directing',
+      title: 'The Providence of Neighboring Bodies', role: 'Director',
+      company: 'UNCSA — Keys to the Kingdom', year: '2023', note: '',
+      collaborators: {
+        'Stage Manager': ['Ella Colbus'],
+        'Actors': ['Gianna Hoffman', 'Kobe McKelvey', 'Aisha Sougou']
+      },
+      cover: 'images/directing/PNB3.jpg',
+      photos: [
+        'images/directing/PNB4.jpg',
+        'images/directing/PNB1.jpg',
+        'images/directing/PNB2.jpg',
+        'images/directing/PNB5.jpg',
+        'images/directing/PNB6.jpg',
+        'images/directing/PNB7.jpg',
+        'images/directing/PNB8.jpg',
+        'images/directing/PNB9.jpg',
+        'images/directing/PNB10.jpg',
+        'images/directing/PNB11.jpg',
+        'images/directing/PNB12.jpg'
+      ]
+    },
+
+    /* ── OTHER ───────────────────────────────────────────────────── */
+    {
+      id: 'upstage', category: 'directing',
+      title: 'Upstage Theater', role: 'Founder · Artistic Director',
+      company: 'Mountain View, CA', year: '2017–2019',
+      note: 'A teen-run theater company Nicolas founded and led in high school. Productions included Rosencrantz & Guildenstern Are Dead (2018), The Aliens (2019), and Bare: A Pop Opera (2019).',
+      collaborators: {},
+      cover: '',
+      babs: true,
+      babsShows: [
+        {
+          title: 'Rosencrantz & Guildenstern Are Dead',
+          role: 'Director',
+          photos: []
+        },
+        {
+          title: 'The Aliens',
+          role: 'Director',
+          photos: []
+        },
+        {
+          title: 'Bare: A Pop Opera',
+          role: 'Director',
+          note: 'dir. Nicolas Poler & Andie Chan',
+          photos: []
+        }
+      ]
+    },
+    {
+      id: 'midsummer-romeo', category: 'other',
+      title: 'Midsummer / Romeo & Juliet', role: 'Director',
+      company: 'Marin Shakespeare Company', year: '2025',
+      note: 'Youth summer camp productions, ages 8–12.',
+      collaborators: {}, cover: 'images/other/MSC-camp-set.JPG', photos: ['images/other/MSC-camp-set.JPG']
+    },
+
+    {
+      id: 'throckmorton-sm', category: 'other',
+      title: 'Into the Woods · Sweeney Todd · Chicago', role: 'Stage Manager',
+      company: 'Throckmorton Theatre', year: '2024–25', note: '',
+      collaborators: {},
+      cover: 'images/other/ST12.jpg',
+      credit: 'Photos: illumigarden',
+      babs: true,
+      babsShows: [
+        {
+          title: 'Into the Woods',
+          role: 'Stage Manager',
+          note: 'dir. Reba Gilbert · Choreography: Erin Gentry & Gina Chapman · Music Director: Diana Lee',
+          photos: [
+            'images/other/ITW2.jpg','images/other/ITW3.jpg','images/other/ITW4.jpg',
+            'images/other/ITW5.jpg','images/other/ITW6.jpg','images/other/ITW7.jpg',
+            'images/other/ITW9.jpg','images/other/ITW12.jpg','images/other/ITW13.jpg',
+            'images/other/ITW14.jpg','images/other/ITW15.jpg','images/other/ITW16.jpg'
+          ]
+        },
+        {
+          title: 'Sweeney Todd',
+          role: 'Stage Manager',
+          note: 'dir. Brennan Pickman-Thoon · Choreography: Kathryn Aarons · Music Director: Daniel Savio',
+          photos: [
+            'images/other/ST1.jpg','images/other/ST2.jpg','images/other/ST3.jpg',
+            'images/other/ST4.jpg','images/other/ST5.jpg','images/other/ST6.jpg',
+            'images/other/ST7.jpg','images/other/ST8.jpg','images/other/ST9.jpg',
+            'images/other/ST10.jpg','images/other/ST11.jpg','images/other/ST12.jpg',
+            'images/other/ST13.jpg'
+          ]
+        },
+        {
+          title: 'Chicago',
+          role: 'Stage Manager',
+          note: 'dir./choreography: Erin Gentry · Choreography: Reba Gilbert & Gina Chapman · Music Director: Nick Brown',
+          photos: [
+            'images/other/CHI1.jpg','images/other/CHI2.jpg','images/other/CHI3.jpg',
+            'images/other/CHI4.jpg','images/other/CHI5.jpg','images/other/CHI7.jpg',
+            'images/other/CHI8.jpg','images/other/CHI9.jpg','images/other/CHI10.jpg',
+            'images/other/CHI11.jpg','images/other/CHI12.jpg','images/other/CHI13.jpg'
+          ]
+        }
+      ]
+    },
+    {
+      id: 'residencies', category: 'other',
+      title: 'Residencies & Youth Productions', role: 'Teaching Artist · Director',
+      company: 'Bay Area schools & companies', year: '2024–present',
+      note: 'Ongoing school residencies and youth theater work across San Francisco and Marin County, including work with Spanish-speaking and ESL students.',
+      collaborators: {}, cover: 'images/other/TELK1.jpg', photos: ['images/other/TELK1.jpg', 'images/other/TELK2.jpg']
+    }
+  ];
+
+  let currentCategory = 'acting';
+  let lbImages = [];
+  let lbIndex = 0;
+
+  /* LIGHTBOX */
+  function openLightbox(src, images, idx) {
+    lbImages = images;
+    lbIndex = idx;
+    document.getElementById('lb-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function lbNav(dir) {
+    lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+    document.getElementById('lb-img').src = lbImages[lbIndex];
+  }
+  document.getElementById('lb-close').onclick = closeLightbox;
+  document.getElementById('lb-prev').onclick = (e) => { e.stopPropagation(); lbNav(-1); };
+  document.getElementById('lb-next').onclick = (e) => { e.stopPropagation(); lbNav(1); };
+  document.getElementById('lightbox').onclick = (e) => { if (e.target === document.getElementById('lightbox')) closeLightbox(); };
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+  });
+
+  const galleryImgs = [...document.querySelectorAll('.gallery-item img')];
+  galleryImgs.forEach((img, i) => img.addEventListener('click', () => openLightbox(img.src, galleryImgs.map(g => g.src), i)));
+
+  function imgOrPh(src, phText, cls) {
+    return src ? `<img src="${src}" alt="">` : `<div class="${cls}"><span>${phText}</span></div>`;
+  }
+
+  function openCategory(cat) {
+    currentCategory = cat;
+    document.getElementById('cat-title').textContent = CATEGORIES[cat].title;
+    const items = PROJECTS.filter(p => p.category === cat);
+    document.getElementById('cat-grid').innerHTML = items.map(p => `
+      <div class="work-card" onclick="openProject('${p.id}')">
+        <div class="work-card-image">${p.cover ? `<img src="${p.cover}" alt="">` : `<div class="work-card-type"><span>${p.title}</span></div>`}</div>
+        <div class="work-card-meta">
+          <div class="work-card-title">${p.title}</div>
+          <div class="work-card-sub">${[p.role, p.company].filter(Boolean).join(' · ')}</div>
+        </div>
+      </div>`).join('');
+    go('category');
+  }
+
+  function openProject(id) {
+    const p = PROJECTS.find(x => x.id === id);
+    if (!p) return;
+    currentCategory = p.category;
+
+    const meta = [
+      p.role    ? `<div class="project-meta-item"><div class="k">${p.babs ? 'Roles' : 'Role'}</div><div class="v">${p.role}</div></div>` : '',
+      p.company ? `<div class="project-meta-item"><div class="k">Company</div><div class="v">${p.company}</div></div>` : '',
+      p.year    ? `<div class="project-meta-item"><div class="k">Year</div><div class="v">${p.year}</div></div>` : ''
+    ].join('');
+
+    const collabEntries = p.collaborators ? Object.entries(p.collaborators).filter(([,v]) => v.length) : [];
+    const collabHtml = collabEntries.length ? `
+      <div class="collaborators">
+        ${collabEntries.map(([role, names]) => `
+          <div class="collab-group">
+            <h4>${role}</h4>
+            <ul>${names.map(n => `<li>${n}</li>`).join('')}</ul>
+          </div>`).join('')}
+      </div>` : '';
+
+    let photosHtml = '';
+
+    if (p.babs) {
+      // BABS: show-separated equal-size grids
+      const allBabsSrcs = p.babsShows.flatMap(s => s.photos);
+
+      document.getElementById('project-content').innerHTML = `
+        <div class="project-header">
+          <div class="project-cat">${CATEGORIES[p.category].title}</div>
+          <h1 class="project-title">${p.title}</h1>
+          <div class="project-meta">${meta}</div>
+        </div>
+        ${p.note ? `<p class="project-note">${p.note}</p>` : ''}
+        ${collabHtml}
+        <div class="project-photos">
+          ${p.babsShows.map(show => `
+            <div class="babs-show">
+              <div class="babs-show-title">${show.title}<span>${show.role}</span></div>
+              ${show.note ? `<p style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;font-style:italic;">${show.note}</p>` : ''}
+              ${show.photos.length ? `<div class="babs-grid">
+                ${show.photos.map(src => {
+                  const globalIdx = allBabsSrcs.indexOf(src);
+                  return `<img src="${src}" alt="" loading="lazy" data-lb-src="${src}" data-lb-index="${globalIdx}">`;
+                }).join('')}
+              </div>` : ''}
+              ${show.credit ? `<p class="photo-credit">${show.credit}</p>` : ''}
+            </div>`).join('')}
+        </div>`;
+
+      document.querySelectorAll('#project-content .babs-grid img').forEach(img => {
+        img.addEventListener('click', () => {
+          const idx = parseInt(img.dataset.lbIndex);
+          openLightbox(img.src, allBabsSrcs, idx);
+        });
+      });
+
+    } else {
+      // Standard project layout
+      const allSrcs = p.photos.map(s => s.replace('|portrait', ''));
+      if (p.photos.length) {
+        const [hero, ...rest] = p.photos;
+        const heroSrc = hero.replace('|portrait', '');
+        const mosaicItems = rest.map((src, i) => {
+          const isPortrait = src.includes('|portrait');
+          const cleanSrc = src.replace('|portrait', '');
+          const style = isPortrait ? 'grid-row: span 2;' : '';
+          return `<div class="pp-item" style="${style}"><img src="${cleanSrc}" alt="" style="width:100%;display:block;height:100%;object-fit:cover;object-position:center top;" data-lb-index="${i+1}"></div>`;
+        }).join('');
+        photosHtml = `
+          <div class="pp-full"><img src="${heroSrc}" alt="" data-lb-index="0"></div>
+          <div class="pp-mosaic">${mosaicItems}</div>`;
+      } else {
+        photosHtml = '';
+      }
+
+      document.getElementById('project-content').innerHTML = `
+        <div class="project-header">
+          <div class="project-cat">${CATEGORIES[p.category].title}</div>
+          <h1 class="project-title">${p.title}</h1>
+          <div class="project-meta">${meta}</div>
+        </div>
+        ${p.note ? `<p class="project-note">${p.note}</p>` : ''}
+        ${collabHtml}
+        <div class="project-photos">${photosHtml}</div>
+        ${p.credit ? `<p class="photo-credit">${p.credit}</p>` : ''}`;
+
+      document.querySelectorAll('#project-content img[data-lb-index]').forEach(img => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', () => openLightbox(img.src, allSrcs, parseInt(img.dataset.lbIndex)));
+      });
+    }
+
+    go('project');
+  }
+
+  function backToCategory() { openCategory(currentCategory); }
+
+  function showResume(which) {
+    document.getElementById('rt-acting').classList.toggle('active', which === 'acting');
+    document.getElementById('rt-production').classList.toggle('active', which === 'production');
+    document.getElementById('resume-frame-acting').style.display = which === 'acting' ? 'block' : 'none';
+    document.getElementById('resume-frame-production').style.display = which === 'production' ? 'block' : 'none';
+  }
+
+  function go(page) {
+    document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+    const target = document.getElementById('page-' + page);
+    target.style.display = page === 'home' ? 'flex' : 'block';
+    target.classList.add('active');
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    if (page === 'about') document.getElementById('nl-about').classList.add('active');
+    if (page === 'contact') document.getElementById('nl-contact').classList.add('active');
+    if (['work','category','project'].includes(page)) document.getElementById('nl-work').classList.add('active');
+    document.documentElement.scrollTop = 0;
+    document.body.style.overflow = '';
+    document.getElementById('nav').classList.toggle('scrolled', page !== 'home');
+  }
+
+  window.addEventListener('scroll', () => {
+    if (document.getElementById('page-home').classList.contains('active'))
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+</body>
+</html>
