@@ -362,6 +362,18 @@
   .category-card:nth-child(2) .category-card-image { border-color: var(--rose-light); }
   .category-card:nth-child(3) .category-card-image { border-color: var(--sage); }
   .work-card-image { border-radius: 14px; }
+  /* section colors: Acting = terracotta, Directing = golden, Stage Management = sage */
+  [data-cat="acting"]    { --sec: var(--rose); --sec-ink: var(--warm-white); }
+  [data-cat="directing"] { --sec: var(--rose-light); --sec-ink: var(--charcoal); }
+  [data-cat="other"]     { --sec: var(--sage); --sec-ink: var(--warm-white); }
+  [data-cat] .work-card-image { border: 10px solid var(--sec); transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+  [data-cat] .work-card:hover .work-card-image { transform: scale(1.03); }
+  [data-cat] .work-card:hover .work-card-image img { transform: none; }
+  [data-cat] .work-card-type { background: var(--sec); }
+  [data-cat] .work-card-type span { color: var(--sec-ink); }
+  [data-cat] .work-card:hover .work-card-type { background: var(--sec); filter: brightness(0.96); }
+  [data-cat] .pp-full img, [data-cat] .pp-mosaic .pp-item img, [data-cat] .babs-grid img { border: 8px solid var(--sec); border-radius: 12px; }
+  [data-cat] .pp-mosaic .pp-item { border-radius: 12px; }
   .about-portrait img { border: 12px solid var(--rose-light); border-radius: 14px; object-position: center 85%; transform: rotate(-3deg); }
   .gallery-item, .gallery-item img { border-radius: 12px; }
   .gallery-item:nth-child(4n+1) img { border: 8px solid var(--rose); }
@@ -979,6 +991,7 @@
 
   function openCategory(cat) {
     currentCategory = cat;
+    document.getElementById('page-category').dataset.cat = cat;
     document.getElementById('cat-title').textContent = CATEGORIES[cat].title;
     const items = PROJECTS.filter(p => p.category === cat && !p.hidden);
     document.getElementById('cat-grid').innerHTML = items.map(p => `
@@ -996,6 +1009,7 @@
     const p = PROJECTS.find(x => x.id === id);
     if (!p) return;
     currentCategory = p.category;
+    document.getElementById('page-project').dataset.cat = p.category;
 
     const meta = [
       p.role    ? `<div class="project-meta-item"><div class="k">${p.role.includes('·') ? 'Roles' : 'Role'}</div><div class="v">${p.role}</div></div>` : '',
