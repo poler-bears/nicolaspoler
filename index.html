@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <!--
-  VERSION: v30-warm-theme
+  VERSION: v31-sick-to-death
   HISTORY:
+  v31-sick-to-death   — Added Sick to Death! (Cléante, dir. Geoff Hoyle,
+                        2025) at the top of Acting. Hero SICK2, cover SICK7.
+                        SICK6–12 are small (~800px) source files.
   v30-warm-theme      — New look ("C with A's font"): Nico's old Wix palette
                         (indigo #3D405B, terracotta #E07A5F, butter #F2CC8F)
                         + sage #81B29A on cream #FBF6EC. Headings Archivo
@@ -599,6 +602,25 @@
   const PROJECTS = [
     /* ── ACTING ──────────────────────────────────────────────────── */
     {
+      id: 'sick-to-death', category: 'acting',
+      title: 'Sick to Death!', role: 'Cléante',
+      company: 'Inverness', director: 'Geoff Hoyle', year: '2025', note: '',
+      collaborators: {},
+      cover: 'images/acting/SICK7.jpg', coverPos: 'center 12%',
+      credit: 'Photos: Matt Gallagher & Carlos Porrata',
+      photos: [
+        'images/acting/SICK2.jpg',
+        'images/acting/SICK7.jpg|portrait',
+        'images/acting/SICK3.jpg',
+        'images/acting/SICK12.jpg',
+        'images/acting/SICK9.jpg',
+        'images/acting/SICK11.jpg',
+        'images/acting/SICK8.jpg|portrait',
+        'images/acting/SICK5.jpg',
+        'images/acting/SICK4.jpg'
+      ]
+    },
+    {
       id: 'midsummer-inverness', category: 'acting',
       title: 'A Midsummer Night\'s Dream', role: 'Francis Flute',
       company: 'Inverness', director: 'Sharron Drake', year: '', note: '',
@@ -998,7 +1020,7 @@
     const items = PROJECTS.filter(p => p.category === cat && !p.hidden);
     document.getElementById('cat-grid').innerHTML = items.map(p => `
       <div class="work-card" onclick="openProject('${p.id}')">
-        <div class="work-card-image">${p.cover ? `<img src="${p.cover}" alt="">` : `<div class="work-card-type"><span>${p.title}</span></div>`}</div>
+        <div class="work-card-image">${p.cover ? `<img src="${p.cover}" alt=""${p.coverPos ? ` style="object-position:${p.coverPos}"` : ''}>` : `<div class="work-card-type"><span>${p.title}</span></div>`}</div>
         <div class="work-card-meta">
           <div class="work-card-title">${p.title}</div>
           <div class="work-card-sub">${[p.role, p.company, p.director && 'dir. ' + p.director].filter(Boolean).join(' · ')}</div>
