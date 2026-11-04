@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <!--
-  VERSION: v33-sick-photos
+  VERSION: v34-acting-order
   HISTORY:
+  v34-acting-order    — Acting order: Bar Shakes, Sick to Death!, Mysterious
+                        Stranger, Midsummer, Doomers, Cakewalk, then UNCSA.
   v33-sick-photos     — Sick to Death!: cover SICK9 (peeking through the
                         curtain), page hero SICK5 (red-robes curtain call).
   v32-sharron-drake-ca — Company for Sick to Death! and Midsummer (Inverness)
@@ -608,69 +610,6 @@
   const PROJECTS = [
     /* ── ACTING ──────────────────────────────────────────────────── */
     {
-      id: 'sick-to-death', category: 'acting',
-      title: 'Sick to Death!', role: 'Cléante',
-      company: 'Sharron Drake Community Arts', companyShort: 'Sharron Drake', director: 'Geoff Hoyle', year: '2025', note: '',
-      collaborators: {},
-      cover: 'images/acting/SICK9.jpg',
-      credit: 'Photos: Matt Gallagher & Carlos Porrata',
-      photos: [
-        'images/acting/SICK5.jpg',
-        'images/acting/SICK7.jpg|portrait',
-        'images/acting/SICK2.jpg',
-        'images/acting/SICK3.jpg',
-        'images/acting/SICK9.jpg',
-        'images/acting/SICK11.jpg',
-        'images/acting/SICK8.jpg|portrait',
-        'images/acting/SICK12.jpg',
-        'images/acting/SICK4.jpg'
-      ]
-    },
-    {
-      id: 'midsummer-inverness', category: 'acting',
-      title: 'A Midsummer Night\'s Dream', role: 'Francis Flute',
-      company: 'Sharron Drake Community Arts', companyShort: 'Sharron Drake', director: 'Sharron Drake', year: '', note: '',
-      collaborators: {},
-      cover: 'images/acting/IMSND5.jpg',
-      photos: [
-        'images/acting/IMSND3.jpg',
-        'images/acting/IMSND2.jpg|portrait',
-        'images/acting/IMSND4.jpg',
-        'images/acting/IMSND1.jpg',
-        'images/acting/IMSND6.jpg',
-        'images/acting/IMSND7.jpg'
-      ]
-    },
-    {
-      id: 'mysterious-stranger', category: 'acting',
-      title: 'The Mysterious Stranger', role: 'Gustave Engle',
-      company: 'SF Youth Theatre', director: 'Cliff Mayotte', year: '', note: '',
-      collaborators: {},
-      cover: 'images/acting/MS2.jpg',
-      credit: 'Photos: Robbie Sweeney',
-      photos: [
-        'images/acting/MS3.jpg',
-        'images/acting/MS1.jpg',
-        'images/acting/MS4.jpg',
-        'images/acting/MS5.jpg',
-        'images/acting/MS6.jpg'
-      ]
-    },
-    {
-      id: 'cakewalk', category: 'acting',
-      title: 'Cakewalk / When You See Yourself in Such a Way I Smile',
-      role: 'Leon', company: '', director: 'Kobe McKelvey', year: '', note: '',
-      collaborators: {},
-      cover: 'images/acting/CW4.jpg',
-      photos: [
-        'images/acting/CW1.jpg',
-        'images/acting/CW3.jpg',
-        'images/acting/CW5.jpg',
-        'images/acting/CW9.jpg',
-        'images/acting/CW13.jpg'
-      ]
-    },
-    {
       id: 'ba-bar-shakes', category: 'acting',
       title: 'Bay Area Bar Shakes',
       role: 'Hamlet · Macbeth · Dogberry · Lysander · Paris',
@@ -744,10 +683,73 @@
       ]
     },
     {
+      id: 'sick-to-death', category: 'acting',
+      title: 'Sick to Death!', role: 'Cléante',
+      company: 'Sharron Drake Community Arts', companyShort: 'Sharron Drake', director: 'Geoff Hoyle', year: '2025', note: '',
+      collaborators: {},
+      cover: 'images/acting/SICK9.jpg',
+      credit: 'Photos: Matt Gallagher & Carlos Porrata',
+      photos: [
+        'images/acting/SICK5.jpg',
+        'images/acting/SICK7.jpg|portrait',
+        'images/acting/SICK2.jpg',
+        'images/acting/SICK3.jpg',
+        'images/acting/SICK9.jpg',
+        'images/acting/SICK11.jpg',
+        'images/acting/SICK8.jpg|portrait',
+        'images/acting/SICK12.jpg',
+        'images/acting/SICK4.jpg'
+      ]
+    },
+    {
+      id: 'mysterious-stranger', category: 'acting',
+      title: 'The Mysterious Stranger', role: 'Gustave Engle',
+      company: 'SF Youth Theatre', director: 'Cliff Mayotte', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/MS2.jpg',
+      credit: 'Photos: Robbie Sweeney',
+      photos: [
+        'images/acting/MS3.jpg',
+        'images/acting/MS1.jpg',
+        'images/acting/MS4.jpg',
+        'images/acting/MS5.jpg',
+        'images/acting/MS6.jpg'
+      ]
+    },
+    {
+      id: 'midsummer-inverness', category: 'acting',
+      title: 'A Midsummer Night\'s Dream', role: 'Francis Flute',
+      company: 'Sharron Drake Community Arts', companyShort: 'Sharron Drake', director: 'Sharron Drake', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/IMSND5.jpg',
+      photos: [
+        'images/acting/IMSND3.jpg',
+        'images/acting/IMSND2.jpg|portrait',
+        'images/acting/IMSND4.jpg',
+        'images/acting/IMSND1.jpg',
+        'images/acting/IMSND6.jpg',
+        'images/acting/IMSND7.jpg'
+      ]
+    },
+    {
       id: 'doomers', category: 'acting',
       title: 'Doomers', role: 'Understudy',
       company: 'BCTR', director: 'Ash Baker', year: '', note: '',
       collaborators: {}, cover: 'images/acting/DOOM.jpg', photos: ['images/acting/DOOM.jpg']
+    },
+    {
+      id: 'cakewalk', category: 'acting',
+      title: 'Cakewalk / When You See Yourself in Such a Way I Smile',
+      role: 'Leon', company: '', director: 'Kobe McKelvey', year: '', note: '',
+      collaborators: {},
+      cover: 'images/acting/CW4.jpg',
+      photos: [
+        'images/acting/CW1.jpg',
+        'images/acting/CW3.jpg',
+        'images/acting/CW5.jpg',
+        'images/acting/CW9.jpg',
+        'images/acting/CW13.jpg'
+      ]
     },
     {
       id: 'circle-mirror', category: 'acting',
