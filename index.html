@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <!--
-  VERSION: v31-sick-to-death
+  VERSION: v32-sharron-drake-ca
   HISTORY:
+  v32-sharron-drake-ca — Company for Sick to Death! and Midsummer (Inverness)
+                        is Sharron Drake Community Arts; cards use the new
+                        optional companyShort ("Sharron Drake") and skip the
+                        director when it repeats the company name.
   v31-sick-to-death   — Added Sick to Death! (Cléante, dir. Geoff Hoyle,
                         2025) at the top of Acting. Hero SICK2, cover SICK7.
                         SICK6–12 are small (~800px) source files.
@@ -604,7 +608,7 @@
     {
       id: 'sick-to-death', category: 'acting',
       title: 'Sick to Death!', role: 'Cléante',
-      company: 'Inverness', director: 'Geoff Hoyle', year: '2025', note: '',
+      company: 'Sharron Drake Community Arts', companyShort: 'Sharron Drake', director: 'Geoff Hoyle', year: '2025', note: '',
       collaborators: {},
       cover: 'images/acting/SICK7.jpg', coverPos: 'center 12%',
       credit: 'Photos: Matt Gallagher & Carlos Porrata',
@@ -623,7 +627,7 @@
     {
       id: 'midsummer-inverness', category: 'acting',
       title: 'A Midsummer Night\'s Dream', role: 'Francis Flute',
-      company: 'Inverness', director: 'Sharron Drake', year: '', note: '',
+      company: 'Sharron Drake Community Arts', companyShort: 'Sharron Drake', director: 'Sharron Drake', year: '', note: '',
       collaborators: {},
       cover: 'images/acting/IMSND5.jpg',
       photos: [
@@ -1023,7 +1027,7 @@
         <div class="work-card-image">${p.cover ? `<img src="${p.cover}" alt=""${p.coverPos ? ` style="object-position:${p.coverPos}"` : ''}>` : `<div class="work-card-type"><span>${p.title}</span></div>`}</div>
         <div class="work-card-meta">
           <div class="work-card-title">${p.title}</div>
-          <div class="work-card-sub">${[p.role, p.company, p.director && 'dir. ' + p.director].filter(Boolean).join(' · ')}</div>
+          <div class="work-card-sub">${[p.role, p.companyShort || p.company, p.director && p.director !== (p.companyShort || p.company) && 'dir. ' + p.director].filter(Boolean).join(' · ')}</div>
         </div>
       </div>`).join('');
     go('category');
